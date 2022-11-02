@@ -433,7 +433,7 @@ On substituting the values, we get
 
 \solution Download the following Python code that plots Fig. \ref{fig-4.3}
 \begin{lstlisting}
-	wget https://github.com/Ankit-Saha-2003/EE3900/raw/main/Circuit/codes/4.3.py
+	wget https://github.com/AvinashNayak27/Spice/blob/master/codes/4.3.py
 \end{lstlisting}
 
 Run the codes by executing
@@ -544,5 +544,68 @@ Thus
 	&= \frac{2.5\times10^5 (1+z^{-1})}{7.5\times10^5 + 1 + (7.5\times10^5 - 1)z^{-1}}
 \end{align}
 which is the same as what we obtained earlier
+
+\item Find $y(n)$ from $H(z)$ and verify whether $y(n) = y(t)|_{t=n}$
+
+\solution 
+\begin{align}
+	Y(z) &= H(z)X(z) \\
+	&= \frac{2.5\times10^5 (1+z^{-1})}{7.5\times10^5 + 1 + (7.5\times10^5 - 1)z^{-1}} \frac{2}{1-z^{-1}} \\
+	&= \frac{\frac{2}{3}}{1-z^{-1}} -\frac{\frac{2}{3}}{7.5\times10^5 + 1 + (7.5\times10^5 - 1)z^{-1}}
+\end{align}
+
+On taking the inverse $Z$-transform by considering the ROC to be $\abs{z} > 1$, we get
+\begin{align}
+	y(n) &= \frac{2}{3}u(n) - \frac{2}{3}\frac{1}{7.5\times10^5 + 1}\brak{-\frac{7.5\times10^5 - 1}{7.5\times10^5 + 1}}^nu(n) \\
+	&= \frac{2}{3} \brak{1 - \frac{(1-7.5\times10^5)^n}{(1+7.5\times10^5)^{n+1}}}u(n)
+\end{align}
+
+If we are sampling the signal at intervals of $T \ll 10^{-5}$, say $\SI[parse-numbers=false]{10^{-7}}{\second}$, i.e., $n = 10^{-7}, 2\times10^{-7},\ldots$
+\begin{align}
+	y(n) &\approx \frac{2}{3} \brak{1 - \frac{1-7.5\times10^5n}{1+7.5\times10^5n}}u(n)
+\end{align}
+
+Now
+\begin{align}
+	Y(s) &= H(s)X(s) \\
+	&= \frac{5\times10^5}{s+1.5\times10^6} \frac{2}{s} \\
+	&= \frac{10^6}{1.5\times10^6} \brak{\frac{1}{s} - \frac{1}{s+1.5\times10^6}}
+\end{align}
+
+On taking the inverse Laplace transform by considering the ROC to be $\Re(s) > 0$, we get
+\begin{align}
+	y(t) = \frac{2}{3}\brak{1 - e^{-1.5\times10^6t}}u(t)
+\end{align}
+
+But 
+\begin{align}
+	e^{-1.5\times 10^6 t} &= \frac{e^{-0.75 \times 10^6 t}}{e^{0.75 \times 10^6 t}} \\
+	&\approx \frac{1-7.5\times10^5t}{1+7.5\times10^5t} && \text{when } t \ll 10^{-6} 
+\end{align}
+
+Therefore
+\begin{align}
+	y(t) &\approx \frac{2}{3} \brak{1 - \frac{1-7.5\times10^5t}{1+7.5\times10^5t}} u(t) \\
+	\therefore y(n) &= y(t)|_{t=n}
+\end{align}
+
+Download the following codes for simulation and plotting Fig. \ref{fig-4.7} respectively
+\begin{lstlisting}
+	wget https://github.com/AvinashNayak27/Spice/blob/master/codes/4.7.cir
+	wget https://github.com/AvinashNayak27/Spice/blob/master/codes/4.7.py
+\end{lstlisting}
+
+Run the codes by executing
+\begin{lstlisting}
+	ngspice 4.7.cir
+	python 4.7.py
+\end{lstlisting}	
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\columnwidth]{./figs/4.7.png}
+	\caption{Plots of $y(t)$ and $y(n)$}
+	\label{fig-4.7}	
+\end{figure}
 \end{enumerate}
 \end{document}

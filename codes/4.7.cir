@@ -1,0 +1,13 @@
+Problem 4.7
+V2 v2 0 2
+R1 vc 0 1
+R2 vc v2 2
+C0 vc 0 1u ic=0
+.tran 100n 5u uic
+
+.control
+run
+wrdata 4.7.dat V(vc)
+.endc
+
+.end
