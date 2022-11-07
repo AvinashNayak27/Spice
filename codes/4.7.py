@@ -27,7 +27,7 @@ def y_diff(n):
     if n < 0:
         return 0
     else:
-        return (y_diff(n-1)*((1e-6 - 0.75)/(1e-6 + 0.75)))+1/(1e-6+1.5)
+        return (y_diff(n-1)*((1e-6 - 0.75)/(1e-6 + 0.75)**(n*5e6)))+2/3-(1/(1e-6+1.5))**(n*5e6)
 
 yt = sp.vectorize(y_cont)
 yn = sp.vectorize(y_disc)
@@ -45,6 +45,6 @@ plt.plot(T, yn(T), '.', label='$y(n)$')
 plt.plot(T, yd(T), '.', label='$y(d)$')
 plt.grid()
 plt.legend()
-# plt.savefig('./figs/4.7.png')
+plt.savefig('./figs/4.7.png')
 plt.show()
 #subprocess.run(shlex.split("termux-open ../figs/4.3.png"))
