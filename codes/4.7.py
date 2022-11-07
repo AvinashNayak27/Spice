@@ -27,8 +27,7 @@ def y_diff(n):
     if n < 0:
         return 0
     else:
-        return (y_diff(n-1)*((1e-6 - 0.75)/(1e-6 + 0.75)**(n*5e6)))+2/3-(1/(1e-6+1.5))**(n*5e6)
-
+        return y_diff(n-1)*(((1 - 0.075)/(1 + 0.075))**(n*1e7))+((u(n)+u(n-1))*2/3)*(1 - ((1 - 0.075)/(1 + 0.075))**(n*1e7))
 yt = sp.vectorize(y_cont)
 yn = sp.vectorize(y_disc)
 yd = sp.vectorize(y_diff)
@@ -41,8 +40,9 @@ T = np.linspace(0, 5e-6, 100)
 
 plt.plot(T, yt(T), label='$y(t)$')
 plt.plot(spice[:,0], spice[:,1], 'o', label='ngspice')
+plt.plot(T, yd(T), '*', label='$ydiff(n)$',ms=10)
 plt.plot(T, yn(T), '.', label='$y(n)$')
-plt.plot(T, yd(T), '.', label='$y(d)$')
+
 plt.grid()
 plt.legend()
 plt.savefig('./figs/4.7.png')
